@@ -1,4 +1,6 @@
-immutable KernelSum <: Kernel
+abstract CombinedKernel <: Kernel
+
+immutable KernelSum <: CombinedKernel
     a::Kernel
     b::Kernel
 end
@@ -16,7 +18,7 @@ covderiv{T}(k::KernelSum, i::Integer, x1::T, x2::T) = (
 )
 
 
-immutable KernelProduct <: Kernel
+immutable KernelProduct <: CombinedKernel
     a::Kernel
     b::Kernel
 end

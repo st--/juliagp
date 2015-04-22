@@ -1,3 +1,6 @@
+abstract ScalarKernel <: Kernel
+abstract VectorKernel <: Kernel
+
 immutable CovConst{N<:Number} <: Kernel
     sf2::N
 end
@@ -10,7 +13,7 @@ cov(k::CovConst, x1, x2) = k.sf2
 covderiv(k::CovConst, i::Integer, x1, x2) = one(k.sf2)
 
 
-immutable CovSEiso{N<:Number} <: Kernel
+immutable CovSEiso{N<:Number} <: VectorKernel
     ell::N
 end
 typealias SqExp CovSEiso
@@ -21,7 +24,7 @@ cov{T}(k::CovSEiso, x1::T, x2::T) = exp(-0.5vecnorm(x1 - x2)^2 / k.ell^2)
 covderiv{T}(k::CovSEiso, i::Integer, x1::T, x2::T) = vecnorm(x1 - x2)^2 / k.ell^3 * cov(k, x1, x2)
 
 
-immutable CovSEard{N<:Number} <: Kernel
+immutable CovSEard{N<:Number} <: VectorKernel
     ells::Vector{N}
 end
 length(k::CovSEard) = length(k.ells)
@@ -33,7 +36,7 @@ covderiv{T<:Number}(k::CovSEard, i::Integer, x1::Vector{T}, x2::Vector{T}) = (
 )
 
 
-immutable CovPeriodic <: Kernel
+immutable CovPeriodic <: ScalarKernel
     ell::Number
     p::Number
 end
