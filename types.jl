@@ -1,4 +1,12 @@
-abstract Kernel
+abstract Kernel # covariance kernel
+# concrete subtypes should implement the following methods:
+# length(k::<Kernel>) = the number of hyperparameters, needed for derivatives
+# cov(k::<Kernel>, x1, x2) = the covariance function of x1 and x2
+# covderiv(k::<Kernel>, i::Integer, x1, x2) = derivative of the covariance w.r.t. its i'th hyperparameter
+# cov_d(k::<Kernel>, x1, x2) = derivative of the covariance w.r.t. x1
+# covd_(k::<Kernel>, x1, x2) = derivative of the covariance w.r.t. x2
+# covdd(k::<Kernel>, x1, x2) = second (mixed) derivative of the covariance w.r.t. x1 and x2
+
 
 typealias GPInput{T<:Number} Union(Vector{T}, Matrix{T})
 typealias GPOutput{T<:Number} Vector{T}
