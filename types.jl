@@ -18,6 +18,7 @@ type GaussianProcess{N<:Number}
     xs::GPInput{N} # training input points
     ys::GPOutput{N} # training function values
     kxxI::Matrix{N} # inverse of (training, training) covariance matrix
+    α::Vector{N} # coefficients
 end
 
 

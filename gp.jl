@@ -1,7 +1,8 @@
 function gptrain(k::Kernel, xs::GPInput, ys::GPOutput, noise=0.; jitter=jitterdefault)
     kxx = covmat(k, xs, xs) + noise^2 * neye(xs) + jitter * neye(xs)
     kxxI = inv(kxx)
-    return GaussianProcess(k, noise, xs, ys, kxxI)
+    α = kxxI * ys
+    return GaussianProcess(k, noise, xs, ys, kxxI, α)
 end
 
 function predict(gp::GaussianProcess, newxs::GPInput)
@@ -9,7 +10,7 @@ function predict(gp::GaussianProcess, newxs::GPInput)
     kx_x = kxx_'
     kx_x_ = covmat(gp.kernel, newxs, newxs)
     
-    μ = kx_x * gp.kxxI * gp.ys
+    μ = kx_x * gp.α
     Σ = kx_x_ - kx_x * gp.kxxI * kxx_
     
     return μ, sqrt(diag(Σ))

@@ -11,6 +11,7 @@ inputindex{T}(xs::Array{T,2}, i::Integer) = vec(xs[i,:])
 # returns identity matrix corresponding to number of input points
 neye(xs) = eye(inputlength(xs))
 
+# numerically stable log-determinant of a matrix
 function logdet{N<:Number}(A::Matrix{N})
     L = chol(A)
     return 2sum(log(diag(L)))
